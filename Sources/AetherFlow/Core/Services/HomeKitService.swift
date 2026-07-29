@@ -14,9 +14,7 @@ final class HomeKitService: NSObject, ObservableObject {
 
     func requestAccess() async -> Bool {
         await withCheckedContinuation { continuation in
-            manager.requestAuthorization { status in
-                continuation.resume(returning: status.contains(.authorized))
-            }
+            continuation.resume(returning: manager.authorizationStatus.contains(.authorized))
         }
     }
 
