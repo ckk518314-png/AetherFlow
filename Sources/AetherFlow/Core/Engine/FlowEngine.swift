@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import UserNotifications
+import UIKit
 
 final class FlowEngine: ObservableObject {
     private let store: FlowStore
