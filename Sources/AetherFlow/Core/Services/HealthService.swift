@@ -18,6 +18,7 @@ final class HealthService: ObservableObject {
         writeTypes: Set<HKSampleType>
     ) async throws -> Bool {
         try await store.requestAuthorization(toShare: writeTypes, read: readTypes)
+        return true
     }
 
     func requestDefaultPermissions() async throws {
