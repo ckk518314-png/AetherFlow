@@ -71,7 +71,7 @@ struct FlowsView: View {
         content.title = result.success ? "流程完成" : "流程失败"
         content.body = flow.name
         content.sound = .default
-        UNUserNotificationCenter.current().add(
+        try? await UNUserNotificationCenter.current().add(
             .init(identifier: UUID().uuidString, content: content, trigger: nil)
         )
     }
