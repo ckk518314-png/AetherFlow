@@ -5,7 +5,7 @@ final class HomeKitService: NSObject, ObservableObject {
     private let manager = HMHomeManager()
 
     @Published var homes: [HMHome] = []
-    @Published var authorizationStatus: HMHomeManagerAuthorizationStatus = .determined(0)
+    @Published var authorizationStatus: HMHomeManagerAuthorizationStatus = .determined
 
     override init() {
         super.init()
@@ -45,8 +45,8 @@ final class HomeKitService: NSObject, ObservableObject {
         throw HomeKitError.characteristicNotFound
     }
 
-    func executeScene(_ scene: HMScene) async throws {
-        let home = scene.home
+    func executeScene(_ scene: HMActionSet) async throws {
+        let home = scene.home ?? homes.first!
         try await home.executeActionSet(scene)
     }
 
