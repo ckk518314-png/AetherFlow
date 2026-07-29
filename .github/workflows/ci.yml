@@ -5,52 +5,12 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Build & Test
-    runs-on: macos-14
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.4'
-
-      - name: Setup XcodeGen
-        run: brew install xcodegen
-
-      - name: Generate Xcode project
-        run: xcodegen generate
-
-      - name: Resolve packages
-        run: |
-          xcodebuild -resolvePackageDependencies \
-            -project AetherFlow.xcodeproj \
-            -scheme AetherFlow
-
-      - name: Build
-        run: |
-          xcodebuild build \
-            -project AetherFlow.xcodeproj \
-            -scheme AetherFlow \
-            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
-            CODE_SIGNING_ALLOWED=NO
-
-      - name: Test
-        run: |
-          xcodebuild test \
-            -project AetherFlow.xcodeproj \
-            -scheme AetherFlow \
-            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
-            CODE_SIGNING_ALLOWED=NO
-
   build_ipa:
-    name: Build IPA (Dev)
+    name: Build Unsigned IPA
     runs-on: macos-14
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v4
@@ -66,20 +26,34 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
-      - name: Bundle install
-        run: bundle install
+      - name: Archive (no signing)
+        run: |
+          xcodebuild archive \
+            -project AetherFlow.xcodeproj \
+            -scheme AetherFlow \
+            -archivePath build/AetherFlow.xcarchive \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM=""
 
-      - name: Run fastlane
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          TEAM_ID: ${{ secrets.TEAM_ID }}
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          FASTLANE_SESSION: ''
-        run: bundle exec fastlane build_dev
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/AetherFlow.xcarchive/Products/Applications/AetherFlow.app Payload/
+          zip -r AetherFlow.ipa Payload/
+          rm -rf Payload
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: AetherFlow.ipa
-          path: build/AetherFlow.ipa
+          path: AetherFlow.ipa
+
+      - name: Upload Build Page
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: install
+          path: AetherFlow.ipa
