@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UserNotifications
 
 final class FlowEngine: ObservableObject {
     private let store: FlowStore
@@ -289,12 +290,5 @@ final class FlowEngine: ObservableObject {
     struct FlowResult: Codable {
         let success: Bool
         let output: String
-    }
-}
-
-extension FlowEngine.Result {
-    init(success: Bool, output: String) {
-        self.success = success
-        self.output = output
     }
 }
