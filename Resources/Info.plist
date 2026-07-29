@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>zh_CN</string>
+    <key>CFBundleDisplayName</key>
+    <string>AetherFlow</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>NSCalendarsUsageDescription</key>
+    <string>AetherFlow 需要访问日历以创建和管理事件</string>
+    <key>NSRemindersUsageDescription</key>
+    <string>AetherFlow 需要访问提醒事项以创建和管理提醒</string>
+    <key>NSHealthShareUsageDescription</key>
+    <string>AetherFlow 需要读取健康数据以触发自动化流程</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>AetherFlow 需要写入健康数据以完成自动化流程</string>
+    <key>NSHomeKitUsageDescription</key>
+    <string>AetherFlow 需要控制 HomeKit 配件以执行自动化场景</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>AetherFlow 需要获取位置以触发基于地理位置的自动化</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>processing</string>
+    </array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.aetherflow.background.refresh</string>
+    </array>
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>
+    <key>UILaunchScreen</key>
+    <dict/>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+</dict>
+</plist>
