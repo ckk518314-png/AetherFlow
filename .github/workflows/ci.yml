@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.4'
+
+      - name: Setup XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project AetherFlow.xcodeproj \
+            -scheme AetherFlow
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project AetherFlow.xcodeproj \
+            -scheme AetherFlow \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          xcodebuild test \
+            -project AetherFlow.xcodeproj \
+            -scheme AetherFlow \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+            CODE_SIGNING_ALLOWED=NO
