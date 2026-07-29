@@ -46,7 +46,9 @@ final class HomeKitService: NSObject, ObservableObject {
     }
 
     func executeScene(_ scene: HMActionSet) async throws {
-        let home = scene.home ?? homes.first!
+        guard let home = homes.first else {
+            throw HomeKitError.accessoryNotFound
+        }
         try await home.executeActionSet(scene)
     }
 
